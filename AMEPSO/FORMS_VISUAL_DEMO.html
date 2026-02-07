@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration Forms - Visual Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .demo-header {
+            background: linear-gradient(135deg, #FF8C42 0%, #FF6B6B 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .demo-header h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .demo-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .demo-content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #FF8C42;
+            box-shadow: 0 0 0 3px rgba(255, 139, 66, 0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+        
+        .strength-meter {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .strength-meter.weak {
+            background: #FF6B6B;
+        }
+        
+        .strength-meter.fair {
+            background: #FFB84D;
+        }
+        
+        .strength-meter.good {
+            background: #51CF66;
+        }
+        
+        .strength-meter.strong {
+            background: #0080FF;
+        }
+        
+        .strength-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .terms-text {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .terms-text a {
+            color: #FF8C42;
+            text-decoration: none;
+        }
+        
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #FF8C42 0%, #FF6B6B 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 139, 66, 0.4);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .form-footer a {
+            color: #FF8C42;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .form-footer a:hover {
+            color: #FF6B6B;
+        }
+        
+        .features-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+        }
+        
+        .features-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #FF8C42;
+        }
+        
+        .feature h3 {
+            color: #FF8C42;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .feature p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .mobile-preview {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        .mobile-frame {
+            display: inline-block;
+            width: 320px;
+            background: white;
+            border: 15px solid #333;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .mobile-content {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .mobile-content h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .mobile-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .mobile-btn {
+            padding: 12px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mobile-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .mobile-frame {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Login & Registration Forms</h1>
+        
+        <div class="demo-grid">
+            <!-- Login Form -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2>🔐 Login</h2>
+                    <p>Sign in to your account</p>
+                </div>
+                <div class="demo-content">
+                    <div class="form-group">
+                        <label for="loginEmail">📧 Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" value="user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">🔑 Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" value="password123">
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <button class="btn-submit">🔐 Login</button>
+                    <div class="form-footer">
+                        Don't have an account? <a href="#">Register here</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Registration Form -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2>✍️ Register</h2>
+                    <p>Create a new account</p>
+                </div>
+                <div class="demo-content">
+                    <div class="form-group">
+                        <label for="registerName">👤 Full Name</label>
+                        <input type="text" id="registerName" placeholder="Enter your full name" value="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">📧 Email Address</label>
+                        <input type="email" id="registerEmail" placeholder="Enter your email" value="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">🔑 Password</label>
+                        <input type="password" id="registerPassword" placeholder="Enter password (min 6 characters)" value="MyPass123!">
+                        <div class="strength-meter strong"></div>
+                        <div class="strength-text">Password strength: <strong>Strong</strong></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">🔑 Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" value="MyPass123!">
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeTerms" checked>
+                        <label for="agreeTerms">I agree to the <a href="#">Terms & Conditions</a></label>
+                    </div>
+                    <button class="btn-submit">✍️ Create Account</button>
+                    <div class="form-footer">
+                        Already have an account? <a href="#">Login here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="features-section">
+            <h2>✨ Features Implemented</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>🔐 Secure Authentication</h3>
+                    <p>Backend API integration with Bcrypt password hashing and token-based authentication. Fallback to localStorage if backend unavailable.</p>
+                </div>
+                <div class="feature">
+                    <h3>📝 Form Validation</h3>
+                    <p>Real-time validation for email format, password requirements, name length, and password matching with clear error messages.</p>
+                </div>
+                <div class="feature">
+                    <h3>💪 Password Strength</h3>
+                    <p>Visual password strength meter showing weak, fair, good, or strong based on length, case mix, numbers, and special characters.</p>
+                </div>
+                <div class="feature">
+                    <h3>📱 Responsive Design</h3>
+                    <p>Fully responsive forms that adapt to mobile (360px), tablet (768px), and desktop (1200px+) with touch-friendly controls.</p>
+                </div>
+                <div class="feature">
+                    <h3>🌙 Dark Mode</h3>
+                    <p>Complete dark mode support with automatic color adjustments. User preference is remembered and applied on reload.</p>
+                </div>
+                <div class="feature">
+                    <h3>⚡ Loading States</h3>
+                    <p>Button animations during form submission with disabled state and spinner icon to prevent duplicate submissions.</p>
+                </div>
+                <div class="feature">
+                    <h3>🎯 UX Features</h3>
+                    <p>Remember me checkbox, modal switching, terms agreement, optional consumer ID field, and automatic dashboard redirect.</p>
+                </div>
+                <div class="feature">
+                    <h3>💰 New User Bonus</h3>
+                    <p>New users receive ₱10,000 starting balance automatically upon successful registration to get started immediately.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Preview -->
+        <div class="mobile-preview">
+            <h2>📱 Mobile View Preview</h2>
+            <div class="mobile-frame">
+                <div class="mobile-content">
+                    <h3>AMEPSO E-Wallet</h3>
+                    <p style="font-size: 14px; opacity: 0.9;">Manage your electricity bills and payments with ease</p>
+                    <div class="mobile-buttons">
+                        <button class="mobile-btn">🔐 Login</button>
+                        <button class="mobile-btn">✍️ Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

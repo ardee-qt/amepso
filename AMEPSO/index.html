@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>AMEPSO - E-Wallet Dashboard</title>
+    <link rel="stylesheet" href="style.css?v=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="index.js?v=1" defer></script>
+    <script src="ui-navigation.js?v=1" defer></script>
+</head>
+
+
+<body>
+    <!-- Welcome/Landing Section -->
+    <div class="auth-container" id="welcomeSection">
+        <div id="welcomeNotificationContainer"></div>
+        <div class="welcome-box">
+            <div class="welcome-content">
+                <div class="welcome-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h1>AMEPSO - E-Wallet</h1>
+                <p>Manage your electricity bills and payments with ease</p>
+                <div class="welcome-buttons">
+                    <button class="btn-welcome login" onclick="openModal('loginModal')">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="btn-welcome register" onclick="openModal('registerModal')">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section (Mobile UI) -->
+    <div class="dashboard-container hidden mobile-ui" id="dashboardSection">
+        <div class="mobile-shell">
+            <!-- Top App Bar -->
+            <header class="mobile-appbar" role="banner">
+                <div class="appbar-left">
+                    <div class="appbrand" aria-label="AMEPSO">
+                        <i class="fas fa-wallet" aria-hidden="true"></i>
+                        <span class="appbrand-name">AMEPSO</span>
+                    </div>
+                    <div class="appbar-title" id="breadcrumbCurrent" aria-live="polite">Dashboard</div>
+                </div>
+                <div class="appbar-right">
+                    <span class="appbar-user" id="userName" role="status">User Name</span>
+                    <button class="icon-btn" onclick="openModal('profileModal')" title="Profile" aria-label="Open profile">
+                        <i class="fas fa-user-circle" aria-hidden="true"></i>
+                    </button>
+                    <div class="dark-mode-toggle" title="Light / Dark mode">
+                        <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" class="toggle-checkbox" aria-label="Toggle light/dark mode">
+                        <label for="darkModeToggle" class="toggle-label theme-toggle" title="Theme">
+                            <span class="theme-toggle-icons" aria-hidden="true">
+                                <i class="fas fa-sun"></i>
+                                <i class="fas fa-moon"></i>
+                            </span>
+                            <span class="theme-toggle-thumb" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                    <button class="icon-btn danger" onclick="logout()" title="Logout" aria-label="Logout">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main (scrollable) -->
+            <main class="mobile-main" role="main" id="mobileMain">
+                <!-- Notifications -->
+                <div class="notifications-section" role="region" aria-live="polite" aria-label="Notifications">
+                    <div id="dashboardNotificationContainer"></div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="dashboard-content" id="dashboardOverview">
+                    <div class="dashboard-views">
+                <!-- OVERVIEW VIEW -->
+                <section class="dashboard-view active" data-view="overview" aria-label="Dashboard Overview">
+                    <!-- Balance Card -->
+                    <div class="balance-card">
+                        <div class="balance-header">
+                            <h2>Account Balance</h2>
+                            <div class="balance-menu">
+                                <button class="balance-menu-toggle" aria-label="Account menu" aria-haspopup="true">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="balance-dropdown" role="menu">
+                                    <button class="balance-menu-item" onclick="clearAllData()" role="menuitem">
+                                        <i class="fas fa-trash"></i> Clear All Data
+                                    </button>
+                                    <button class="balance-menu-item" onclick="exportData()" role="menuitem">
+                                        <i class="fas fa-download"></i> Export Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="balance-amount" id="balanceAmount">₱0.00</div>
+                        <div class="balance-footer">
+                            <p>Total Available Balance</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon electricity">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>Pending Bills</h3>
+                            <p id="pendingBillsCount">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon transactions">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3>Total Paid</h3>
+                            <p id="totalPaid">₱0.00</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon recent">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h3>Recent Transaction</h3>
+                            <p id="recentTransaction">N/A</p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="actions-section" aria-label="Quick actions">
+                        <button type="button" class="btn-action" onclick="openModal('paymentModal')"><i class="fas fa-credit-card"></i> Pay Bill</button>
+                        <button type="button" class="btn-action" onclick="openModal('addFundsModal')"><i class="fas fa-plus-circle"></i> Add Funds</button>
+                    </div>
+                </section>
+
+                <!-- HISTORY VIEW -->
+                <section class="dashboard-view" data-view="history" aria-label="Transaction History">
+                    <div class="payment-section">
+                        <div class="history-toolbar" role="region" aria-label="History controls">
+                            <div class="history-toolbar-left">
+                                <h2>History</h2>
+                                <div class="history-count" id="historyCount" aria-live="polite"></div>
+                            </div>
+                            <div class="history-toolbar-controls">
+                                <div class="history-chips" role="group" aria-label="Quick date filters">
+                                    <button type="button" class="chip active" data-range="all">All</button>
+                                    <button type="button" class="chip" data-range="today">Today</button>
+                                    <button type="button" class="chip" data-range="7d">7 days</button>
+                                    <button type="button" class="chip" data-range="30d">30 days</button>
+                                </div>
+                                <label class="history-search" aria-label="Search history">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    <input id="historySearchInput" type="text" placeholder="Search (ref, account, description)" autocomplete="off">
+                                </label>
+                                <select id="historyTypeFilter" aria-label="Filter history by type">
+                                    <option value="all">All</option>
+                                    <option value="bill">Bills</option>
+                                    <option value="deposit">Add Funds</option>
+                                </select>
+                                <select id="historySort" aria-label="Sort history">
+                                    <option value="newest">Newest</option>
+                                    <option value="oldest">Oldest</option>
+                                    <option value="amount_desc">Amount: High to Low</option>
+                                    <option value="amount_asc">Amount: Low to High</option>
+                                </select>
+                                <button type="button" class="history-btn" id="historyClearBtn" aria-label="Clear history filters">
+                                    <i class="fas fa-eraser" aria-hidden="true"></i>
+                                    <span>Clear</span>
+                                </button>
+                                <button type="button" class="history-btn primary" id="historyExportBtn" aria-label="Export filtered history to CSV">
+                                    <i class="fas fa-file-csv" aria-hidden="true"></i>
+                                    <span>Export</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="history-summary" id="historySummary" aria-label="History totals"></div>
+
+                        <div id="billHistoryContainer" class="bill-list" role="list" aria-label="Recent bill payments">
+                            <p class="no-data">No transactions yet. Start by paying a bill!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- UPCOMING BILLS VIEW -->
+                <section class="dashboard-view" data-view="upcoming" aria-label="Upcoming Bills">
+                    <div class="upcoming-bills-section" role="region" aria-label="Upcoming bills within next 30 days">
+                        <div class="upcoming-toolbar" role="region" aria-label="Upcoming bills controls">
+                            <div class="upcoming-toolbar-left">
+                                <h2>Upcoming Bills</h2>
+                                <div class="upcoming-count" id="upcomingCount" aria-live="polite"></div>
+                            </div>
+                            <div class="upcoming-toolbar-controls">
+                                <div class="upcoming-chips" role="group" aria-label="Quick due date filters">
+                                    <button type="button" class="chip active" data-upcoming-range="30d">30 days</button>
+                                    <button type="button" class="chip" data-upcoming-range="7d">7 days</button>
+                                    <button type="button" class="chip" data-upcoming-range="overdue">Overdue</button>
+                                    <button type="button" class="chip" data-upcoming-range="all">All</button>
+                                </div>
+                                <label class="upcoming-search" aria-label="Search upcoming bills">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    <input id="upcomingSearchInput" type="text" placeholder="Search (account, description)" autocomplete="off">
+                                </label>
+                                <select id="upcomingStatusFilter" aria-label="Filter upcoming bills by status">
+                                    <option value="all">All</option>
+                                    <option value="unpaid">Unpaid</option>
+                                    <option value="paid">Paid</option>
+                                </select>
+                                <select id="upcomingSort" aria-label="Sort upcoming bills">
+                                    <option value="due_soon">Due: Soonest</option>
+                                    <option value="due_late">Due: Latest</option>
+                                    <option value="amount_desc">Amount: High to Low</option>
+                                    <option value="amount_asc">Amount: Low to High</option>
+                                </select>
+                                <button type="button" class="history-btn" id="upcomingClearBtn" aria-label="Clear upcoming filters">
+                                    <i class="fas fa-eraser" aria-hidden="true"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="upcomingBillsContainer" class="upcoming-bills-list" role="list" aria-label="Upcoming bills">
+                            <p class="no-data">No upcoming bills</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MORE VIEW (Mobile actions) -->
+                <section class="dashboard-view" data-view="more" aria-label="More actions">
+                    <div class="more-section" role="region" aria-label="More actions">
+                        <h2>More</h2>
+
+                        <div class="more-grid" role="list" aria-label="Quick actions">
+                            <button type="button" class="more-tile" data-modal="paymentModal" role="listitem">
+                                <i class="fas fa-credit-card" aria-hidden="true"></i>
+                                <span>Pay Bill</span>
+                            </button>
+                            <button type="button" class="more-tile" data-modal="addFundsModal" role="listitem">
+                                <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                                <span>Add Funds</span>
+                            </button>
+                            <button type="button" class="more-tile" data-modal="budgetModal" role="listitem">
+                                <i class="fas fa-chart-pie" aria-hidden="true"></i>
+                                <span>Set Budget</span>
+                            </button>
+                            <button type="button" class="more-tile" data-modal="filterModal" role="listitem">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <span>Search</span>
+                            </button>
+                        </div>
+
+                        <div class="more-list" role="list" aria-label="Account actions">
+                            <button type="button" class="more-row" data-modal="pinSetupModal" role="listitem">
+                                <span>Security PIN</span>
+                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="more-row" data-action="downloadStatement" role="listitem">
+                                <span>Download Statement</span>
+                                <i class="fas fa-download" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="more-row" data-action="exportData" role="listitem">
+                                <span>Export Data</span>
+                                <i class="fas fa-file-export" aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <div class="danger-zone" role="region" aria-label="Danger zone">
+                            <div class="danger-zone-title">Danger Zone</div>
+                            <div class="danger-zone-desc">Deletes your wallet data from this device (local storage). This cannot be undone.</div>
+                            <button type="button" class="danger-zone-btn" data-action="clearAllData">
+                                <i class="fas fa-trash" aria-hidden="true"></i>
+                                <span>Clear All Data</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+            </main>
+
+            <!-- Bottom Tabs -->
+            <nav class="bottom-nav" id="bottomNav" role="navigation" aria-label="Bottom navigation">
+                <button type="button" class="tab-btn active" data-view="overview" aria-label="Overview">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                    <span>Home</span>
+                </button>
+                <button type="button" class="tab-btn" data-view="history" aria-label="History">
+                    <i class="fas fa-history" aria-hidden="true"></i>
+                    <span>History</span>
+                </button>
+                <button type="button" class="tab-btn" data-view="upcoming" aria-label="Upcoming Bills">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                    <span>Bills</span>
+                </button>
+                <button type="button" class="tab-btn" data-view="more" aria-label="More">
+                    <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
+                    <span>More</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Login Form -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-sign-in-alt"></i> Login to Your Account</h2>
+                <button class="close-modal" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)" class="auth-form">
+                <div class="input-group">
+                    <label for="loginEmail"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="auth-options">
+                    <label>
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-auth primary" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <div class="auth-footer">
+                    <p>Don't have an account? <button type="button" class="link-btn" onclick="switchAuthModal('registerModal', 'loginModal')">Register here</button></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registerModal" class="modal hidden">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> Create New Account</h2>
+                <button class="close-modal" onclick="closeModal('registerModal')">&times;</button>
+            </div>
+            <form onsubmit="handleRegister(event)" class="auth-form">
+                <div class="input-group">
+                    <label for="registerFullName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="registerFullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="input-group">
+                    <label for="registerEmail"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label for="registerPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="registerPassword" placeholder="Enter password (min 6 characters)" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <label for="registerConfirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <div class="input-group">
+                    <label for="registerConsumerID"><i class="fas fa-hashtag"></i> ORMECO Consumer ID (Optional)</label>
+                    <input type="text" id="registerConsumerID" placeholder="Your consumer account number">
+                </div>
+                <div class="password-strength">
+                    <div class="strength-meter" id="strengthMeter"></div>
+                    <p id="strengthText" class="strength-text">Password strength: <span>weak</span></p>
+                </div>
+                <div class="auth-terms">
+                    <label>
+                        <input type="checkbox" id="agreeTerms" required>
+                        <span>I agree to the <a href="#" target="_blank">Terms & Conditions</a></span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-auth primary" id="registerBtn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+                <div class="auth-footer">
+                    <p>Already have an account? <button type="button" class="link-btn" onclick="switchAuthModal('loginModal', 'registerModal')">Login here</button></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-credit-card"></i> Pay Electricity Bill</h2>
+                <button class="close-modal" onclick="closeModal('paymentModal')">&times;</button>
+            </div>
+            <form onsubmit="payElectricityBill(event)" class="payment-form">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="accountNumber">Consumer Account Number</label>
+                        <input type="text" id="accountNumber" placeholder="Enter ORMECO account number" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="billAmount">Bill Amount</label>
+                        <input type="number" id="billAmount" placeholder="Enter amount in ₱" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" placeholder="e.g., Monthly Bill" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-pay"><i class="fas fa-credit-card"></i> Pay Now</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('paymentModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pay Bill Security Verification (Frontend Only) -->
+    <div id="payBillSecurityModal" class="modal hidden">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-shield-alt"></i> Verify to Pay Bill</h2>
+                <button class="close-modal" onclick="cancelPayBillSecurity()">&times;</button>
+            </div>
+            <form onsubmit="verifyPayBillSecurity(event)" class="auth-form">
+                <div class="input-group">
+                    <label for="payBillVerifyEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="payBillVerifyEmail" placeholder="Enter your account email" required>
+                </div>
+                <div class="input-group">
+                    <label for="payBillVerifyPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="payBillVerifyPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="input-group">
+                    <label for="payBillVerifyPin"><i class="fas fa-hashtag"></i> Security PIN (6 digits)</label>
+                    <input type="password" id="payBillVerifyPin" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="••••••" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-auth primary"><i class="fas fa-check"></i> Verify & Continue</button>
+                    <button type="button" class="btn-cancel" onclick="cancelPayBillSecurity()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Funds Modal -->
+    <div id="addFundsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus-circle"></i> Add Funds to Wallet</h2>
+                <button class="close-modal" onclick="closeModal('addFundsModal')">&times;</button>
+            </div>
+            <form onsubmit="addFunds(event)" class="add-funds-form">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="addFundsAmount">Amount to Add</label>
+                        <input type="number" id="addFundsAmount" placeholder="Enter amount in ₱" step="0.01" min="1" max="100000" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod" required>
+                            <option value="">Select payment method</option>
+                            <option value="debit">Debit Card</option>
+                            <option value="credit">Credit Card</option>
+                            <option value="bank">Bank Transfer</option>
+                            <option value="gcash">GCash</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-add-funds"><i class="fas fa-plus-circle"></i> Add Funds</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('addFundsModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Funds Security Verification (Frontend Only) -->
+    <div id="addFundsSecurityModal" class="modal hidden">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-shield-alt"></i> Verify to Add Funds</h2>
+                <button class="close-modal" onclick="cancelAddFundsSecurity()">&times;</button>
+            </div>
+            <form onsubmit="verifyAddFundsSecurity(event)" class="auth-form">
+                <div class="input-group">
+                    <label for="addFundsVerifyEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="addFundsVerifyEmail" placeholder="Enter your account email" required>
+                </div>
+                <div class="input-group">
+                    <label for="addFundsVerifyPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="addFundsVerifyPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="input-group">
+                    <label for="addFundsVerifyPin"><i class="fas fa-hashtag"></i> Security PIN (6 digits)</label>
+                    <input type="password" id="addFundsVerifyPin" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="••••••" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-auth primary"><i class="fas fa-check"></i> Verify & Continue</button>
+                    <button type="button" class="btn-cancel" onclick="cancelAddFundsSecurity()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Budget Modal -->
+    <div id="budgetModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-chart-pie"></i> Set Monthly Budget</h2>
+                <button class="close-modal" onclick="closeModal('budgetModal')">&times;</button>
+            </div>
+            <form onsubmit="setBudget(event)" class="budget-form">
+                <div class="input-group">
+                    <label for="budgetLimit">Monthly Spending Limit (₱)</label>
+                    <input type="number" id="budgetLimit" placeholder="Enter monthly budget limit" step="0.01" min="100" required>
+                    <p class="help-text">Set your monthly spending limit to track your expenses</p>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Set Budget</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('budgetModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-search"></i> Search & Filter Transactions</h2>
+                <button class="close-modal" onclick="closeModal('filterModal')">&times;</button>
+            </div>
+            <form onsubmit="filterTransactions(event)" class="filter-form">
+                <div class="filter-row">
+                    <div class="input-group">
+                        <label for="searchTerm">Search</label>
+                        <input type="text" id="searchTerm" placeholder="Search by description, account, or reference">
+                    </div>
+                    <div class="input-group">
+                        <label for="filterType">Type</label>
+                        <select id="filterType">
+                            <option value="all">All Types</option>
+                            <option value="bill">Bill Payment</option>
+                            <option value="deposit">Deposit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <div class="input-group">
+                        <label for="filterStartDate">Start Date</label>
+                        <input type="date" id="filterStartDate">
+                    </div>
+                    <div class="input-group">
+                        <label for="filterEndDate">End Date</label>
+                        <input type="date" id="filterEndDate">
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <div class="input-group">
+                        <label for="filterMinAmount">Min Amount (₱)</label>
+                        <input type="number" id="filterMinAmount" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label for="filterMaxAmount">Max Amount (₱)</label>
+                        <input type="number" id="filterMaxAmount" step="0.01" placeholder="999999.99">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="btn-filter"><i class="fas fa-search"></i> Search</button>
+                    <button type="button" class="btn-filter secondary" onclick="clearFilters()"><i class="fas fa-redo"></i> Clear</button>
+                </div>
+            </form>
+            <div id="filteredTransactionsContainer" class="filtered-transactions">
+                <p class="no-data">Use filters to search transactions</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal hidden">
+        <div class="modal-header">
+            <h2><i class="fas fa-user-circle"></i> My Profile</h2>
+            <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="profile-section">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <p id="profileName">Name: <strong>User</strong></p>
+                    <p id="profileEmail">Email: <strong>user@example.com</strong></p>
+                    <p id="profileMemberSince">Member Since: <strong id="memberDate">--</strong></p>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3>Account Settings</h3>
+                <form id="editProfileForm">
+                    <div class="input-group">
+                        <label for="editFullName">Full Name</label>
+                        <input type="text" id="editFullName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editPhone">Phone Number</label>
+                        <input type="tel" id="editPhone" placeholder="Enter your phone number">
+                    </div>
+                    <div class="input-group">
+                        <label for="editAddress">Address</label>
+                        <textarea id="editAddress" placeholder="Enter your address" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" onclick="saveProfileChanges(event)">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-section">
+                <h3>Change Password</h3>
+                <form id="changePasswordForm">
+                    <div class="input-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" placeholder="Enter new password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required>
+                    </div>
+                    <button type="submit" class="btn-submit" onclick="changePassword(event)">
+                        <i class="fas fa-lock"></i> Update Password
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-section">
+                <h3>Security PIN</h3>
+                <p class="help-text">Set a 6-digit PIN to confirm adding funds and bill payments.</p>
+                <button type="button" class="btn-submit" onclick="openModal('pinSetupModal')">
+                    <i class="fas fa-key"></i> Set / Change PIN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIN Setup Modal -->
+    <div id="pinSetupModal" class="modal hidden">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-key"></i> Set Security PIN</h2>
+                <button class="close-modal" onclick="closeModal('pinSetupModal')">&times;</button>
+            </div>
+            <form onsubmit="setPlatformPin(event)" class="auth-form">
+                <div class="input-group">
+                    <label for="pinSetupPassword"><i class="fas fa-lock"></i> Account Password</label>
+                    <input type="password" id="pinSetupPassword" placeholder="Enter your account password" required>
+                </div>
+                <div class="input-group">
+                    <label for="pinSetupPin"><i class="fas fa-hashtag"></i> New 6-digit PIN</label>
+                    <input type="password" id="pinSetupPin" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="••••••" required>
+                </div>
+                <div class="input-group">
+                    <label for="pinSetupConfirm"><i class="fas fa-hashtag"></i> Confirm PIN</label>
+                    <input type="password" id="pinSetupConfirm" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="••••••" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-auth primary"><i class="fas fa-save"></i> Save PIN</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('pinSetupModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PIN Verify Modal -->
+    <div id="pinVerifyModal" class="modal hidden">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-shield-alt"></i> Confirm with PIN</h2>
+                <button class="close-modal" onclick="cancelPinVerification()">&times;</button>
+            </div>
+            <form onsubmit="verifyPlatformPin(event)" class="auth-form">
+                <div class="input-group">
+                    <label for="pinVerifyPin"><i class="fas fa-hashtag"></i> Security PIN</label>
+                    <input type="password" id="pinVerifyPin" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="••••••" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-auth primary"><i class="fas fa-check"></i> Verify</button>
+                    <button type="button" class="btn-cancel" onclick="cancelPinVerification()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="modal-overlay hidden" onclick="closeAllModals()"></div>
+</body>
+</html>
