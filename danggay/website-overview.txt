@@ -1,0 +1,166 @@
+Website Overview - Roxas, Oriental Mindoro Municipality
+
+TARGET AUDIENCE (7 Sentences)
+=================================
+The primary audience for this website is tourists planning to visit Roxas or use it as a gateway to Boracay Island, as well as 
+potential investors and business partners interested in economic opportunities. Secondary audiences include residents seeking municipal 
+services and government information, students researching the municipality, and families looking for travel and tourism information. 
+Tourists need clear information about ferry schedules to Boracay, attractions like San Rafael Cave, accommodations, and local dining. 
+Investors require details about the port facilities, business sectors, economic indicators, and investment opportunities. Residents need 
+easy access to government services, office hours, and documentation requirements. The website design prioritizes clear navigation, mobile 
+responsiveness, and organized information to serve diverse user needs. All content uses simple language and visual hierarchy to make 
+information easily scannable and accessible.
+
+SITEMAP
+=================================
+Home (index.html)
+├── About (about.html) - History, vision, mission, 20 barangays, demographics
+├── Tourism (tourism.html) - Attractions, Boracay gateway, festivalsales, culture
+├── Businesses (businesses.html) - Companies, economic sectors, investment opportunities
+├── Services (services.html) - Government services, departments, requirements
+└── Contact (contact.html) - Location, hours, departments, FAQ
+
+NAVIGATION STRUCTURE
+=================================
+Primary Navigation Menu (appears on all pages):
+- Home
+- About
+- Tourism
+- Businesses
+- Services
+- Contact
+
+Footer Navigation (appears on all pages):
+- Home
+- About
+- Tourism
+- Businesses
+- Services
+- Contact
+
+DESIGN APPROACH: WIREFRAME DESCRIPTION
+=================================
+
+HEADER SECTION (All Pages)
+[Logo/Title: "Roxas" | Subtitle: "Oriental Mindoro, Philippines"]
+[Horizontal Navigation: Home | About | Tourism | Businesses | Services | Contact]
+
+HOME PAGE WIREFRAME:
+[Header]
+[Hero Section: Large Title + Subtitle + Call-to-Action Buttons]
+[Main Content Area]
+  [Section: About Roxas - Brief introduction]
+  [Cards Grid: 4 cards linking to About, Tourism, Businesses, Contact]
+  [Section: Why Visit Roxas - 4 highlighted benefits]
+[Footer: Contact info, Links, Copyright]
+
+ABOUT PAGE WIREFRAME:
+[Header]
+[Hero: Page Title + Subtitle]
+[Main Content]
+  [Section: History - Text + Image]
+  [Section: Vision & Mission - Two columns]
+  [Section: 20 Barangays - Listed information]
+  [Section: Key Facts - Statistics and details]
+[Footer]
+
+TOURISM PAGE WIREFRAME:
+[Header]
+[Hero: Page Title]
+[Main Content]
+  [Section: Welcome intro]
+  [Section: Boracay Gateway - Text + Image]
+  [Section: Attractions - Multiple cards describing sites]
+  [Section: Fiestas & Events]
+  [Section: Culture & Lifestyle]
+  [Section: Tourism Contact Info - Multiple cards]
+  [Gallery: 8 destination photos]
+[Footer]
+
+BUSINESSES PAGE WIREFRAME:
+[Header]
+[Hero: Page Title]
+[Main Content]
+  [Section: Economy Overview]
+  [Section: Shipping & Maritime - 4 company cards]
+  [Section: Agriculture & Trading - 4 company cards]
+  [Section: Tourism & Hospitality - 4 company cards]
+  [Section: Services & Support - 4 company cards]
+  [Section: Investment Opportunities - Featured text + 6 sectors]
+  [Section: Business Support - Information blocks]
+[Footer]
+
+SERVICES PAGE WIREFRAME:
+[Header]
+[Hero: Page Title]
+[Main Content]
+  [Section: Municipal Services Overview]
+  [Sections: 6 service categories - each with information cards]
+  [Contact Information Block]
+  [Important Notes]
+[Footer]
+
+CONTACT PAGE WIREFRAME:
+[Header]
+[Hero: Page Title]
+[Contact Cards Grid: 3 cards with location, phone, hours]
+[Section: Location Map with image]
+[FAQ Section]
+[Communication Methods: 3 contact approach cards]
+[Important Information]
+[Footer]
+
+COLOR PALETTE
+=================================
+Primary Color: #0d3b66 (Dark Blue) - Headers, important text, primary elements
+Secondary Color: #3c6e71 (Teal Green) - Accents, hover states, secondary elements
+Accent Color: #f4d35e (Gold/Yellow) - Highlights, buttons, calls-to-action
+Background: #fdfbf7 (Cream/Off-white) - Main page background
+Text: #1f2328 (Dark Gray/Black) - Body text
+Light Gray: #f5f5f5 - Section backgrounds, cards
+
+TYPOGRAPHY
+=================================
+Font: Trebuchet MS, Gill Sans, Segoe UI, sans-serif (Web-safe sans-serif)
+H1: 2.5rem, bold, primary color
+H2: 2rem, bold, primary color
+H3: 1.5rem, semi-bold, primary color
+H4: 1.2rem, semi-bold, primary color
+Body: 1rem, regular, text color
+Line-height: 1.6
+
+KEY CONTENT HIGHLIGHTS
+=================================
+1. Strategic Gateway Position - Roxas as access point to Boracay, Romblon, Palawan
+2. 20 Barangays - Demonstrates municipal scope and organization
+3. Port Infrastructure - Modern facilities supporting trade and tourism
+4. Diverse Economy - Fishing, agriculture, shipping, tourism sectors
+5. 58,000+ Residents - Growing municipality with economic significance
+6. SIPAG Festival - Annual celebration of local livelihood (Jan 25)
+7. San Rafael Cave - Major tourist attraction with natural limestone formations
+8. Multimodal Companies - Starlite Ferries, Montenegro Shipping Lines operations
+9. Business Opportunities - Investment potential across multiple sectors
+10. Government Services - Comprehensive municipal services and support
+
+DESIGN STANDARDS
+=================================
+- Responsive Design: Mobile-first approach (CSS Media Queries)
+- No External Frameworks: Pure HTML5 and CSS3 only
+- Accessibility: Proper semantic HTML, alt text for images, good contrast
+- Navigation: Consistent, intuitive, appearing on all pages
+- Visual Hierarchy: Clear distinction between headings, subheadings, body text
+- Card Layout: Grid-based card system for organized content presentation
+- Image Integration: Placeholder images with descriptive alt text
+- Footer: Consistent across all pages with quick links and contact info
+
+NOTE ON WIREFRAMES
+=================================
+The wireframes provided are text-based representations showing:
+- Element positioning and layout
+- Content hierarchy and flow
+- Card grid organizations
+- Section spacing and organization
+- Navigation structure
+
+These wireframes were developed to ensure consistent layout across all pages,
+proper information hierarchy, and accessible navigation for all user types.
